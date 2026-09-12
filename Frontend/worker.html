@@ -1,0 +1,99 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>EcoSphere | Worker Dashboard</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<header>
+
+    <div class="logo">
+        <span>♻</span> EcoSphere Worker
+    </div>
+
+    <nav>
+        <a href="index.html">User Portal</a>
+        <a href="login.html" onclick="logout()">Logout</a>
+    </nav>
+
+</header>
+
+<main>
+
+    <section class="dashboard-header">
+
+        <div>
+            <p>WORKER PANEL</p>
+
+            <h1>My Dashboard</h1>
+
+            <span>
+                View assigned reports and update their progress.
+            </span>
+        </div>
+
+    </section>
+
+
+    <section class="dashboard-section">
+
+        <div class="dashboard-section-header">
+
+            <div>
+                <p>TASK MANAGEMENT</p>
+
+                <h2>My Assignments</h2>
+            </div>
+
+        </div>
+
+
+        <div class="assignment-card">
+
+            <button onclick="loadAssignments()">
+                View My Assignments
+            </button>
+
+        </div>
+
+
+        <div id="assignments" class="dashboard-grid"></div>
+
+    </section>
+
+</main>
+
+<footer>
+
+    <div class="footer-logo">
+        ♻ EcoSphere
+    </div>
+
+    <p>
+        Worker Dashboard
+    </p>
+
+</footer>
+
+<script>
+
+    if (!localStorage.getItem("workerId")) {
+        window.location.href = "login.html";
+    }
+
+</script>
+
+<script src="worker.js"></script>
+
+</body>
+
+</html>
+

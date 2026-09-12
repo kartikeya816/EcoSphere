@@ -1,0 +1,91 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>EcoSphere | Staff Login</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<header>
+
+    <div class="logo">
+        <span>♻</span> EcoSphere
+    </div>
+
+    <nav>
+        <a href="index.html">User Portal</a>
+    </nav>
+
+</header>
+
+<main>
+
+    <section class="page-header">
+
+        <p>STAFF ACCESS</p>
+
+        <h1>EcoSphere Login</h1>
+
+        <span>
+            Login as an administrator or waste-management worker.
+        </span>
+
+    </section>
+
+    <section class="login-card">
+
+        <form onsubmit="login(event)">
+
+            <label for="email">
+                Email
+            </label>
+
+            <input
+                    type="email"
+                    id="email"
+                    placeholder="Enter email">
+
+            <label for="password">
+                Password
+            </label>
+
+            <input
+                    type="password"
+                    id="password"
+                    placeholder="Enter password">
+
+            <button type="submit">Login</button>
+
+            <p id="loginResult"></p>
+
+        </form>
+
+    </section>
+
+</main>
+
+<footer>
+
+    <div class="footer-logo">
+        ♻ EcoSphere
+    </div>
+
+    <p>
+        Staff Portal
+    </p>
+
+</footer>
+
+<script src="login.js"></script>
+
+</body>
+
+</html>
+

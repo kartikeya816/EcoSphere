@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <title>EcoSphere | Track Report</title>
+
+    <link rel="stylesheet" href="style.css">
+
+
+</head>
+
+<body>
+
+<header>
+
+
+    <div class="logo">
+        <span>♻</span> EcoSphere
+    </div>
+
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="report.html">Report</a>
+        <a href="track.html" class="active">Track</a>
+        <a href="about.html">About</a>
+    </nav>
+
+
+</header>
+
+<main>
+
+
+    <section class="page-header">
+
+        <p>REPORT STATUS</p>
+
+        <h1>Track Your Report</h1>
+
+        <span>
+        Enter your tracking code to check the latest status.
+    </span>
+
+    </section>
+
+
+    <section class="track-page-card">
+
+        <div class="track-large-icon">
+            ♻
+        </div>
+
+        <h2>Where is your report now?</h2>
+
+        <p>
+            Enter the unique tracking code you received
+            after submitting your waste report.
+        </p>
+
+
+        <div class="track-input">
+
+            <input
+                    type="text"
+                    id="hashCode"
+                    placeholder="e.g. EC-E8DA81DB">
+
+            <button onclick="trackReport()">
+                Track Report
+            </button>
+
+        </div>
+
+
+        <div id="trackResult"></div>
+
+        <div id="progressTracker" class="progress-tracker">
+
+            <div class="progress-step" id="stepReported">
+                <div class="progress-circle">1</div>
+                <span>Reported</span>
+            </div>
+
+            <div class="progress-line"></div>
+
+            <div class="progress-step" id="stepProgress">
+                <div class="progress-circle">2</div>
+                <span>In Progress</span>
+            </div>
+
+            <div class="progress-line"></div>
+
+            <div class="progress-step" id="stepCompleted">
+                <div class="progress-circle">3</div>
+                <span>Completed</span>
+            </div>
+
+        </div>
+
+    </section>
+
+
+</main>
+
+<footer>
+
+
+    <div class="footer-logo">
+        ♻ EcoSphere
+    </div>
+
+    <p>
+        Smart Waste Management
+    </p>
+
+
+</footer>
+
+<script src="script.js"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <title>EcoSphere | Report Waste</title>
+
+    <link rel="stylesheet" href="style.css">
+
+
+</head>
+
+<body>
+
+<header>
+
+
+    <div class="logo">
+        <span>♻</span> EcoSphere
+    </div>
+
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="report.html" class="active">Report</a>
+        <a href="track.html">Track</a>
+        <a href="about.html">About</a>
+    </nav>
+
+
+</header>
+
+<main>
+
+
+    <section class="page-header">
+
+        <p>TAKE ACTION</p>
+
+        <h1>Report Waste</h1>
+
+        <span>
+        Upload an image and tell us where the waste is located.
+    </span>
+
+    </section>
+
+
+    <section class="report-page-card">
+
+        <div class="upload-box">
+
+            <div class="upload-icon">
+                📷
+            </div>
+
+            <h2>Upload Waste Image</h2>
+
+            <p>
+                Choose a clear image of the waste
+                you want to report.
+            </p>
+
+            <input
+                    type="file"
+                    id="image"
+                    accept="image/*">
+            <img id="imagePreview" class="image-preview" alt="Selected waste image">
+
+        </div>
+
+
+        <div class="report-form">
+
+            <label for="location">
+                Location
+            </label>
+
+            <input
+                    type="text"
+                    id="location"
+                    placeholder="e.g. Library Block A">
+
+
+            <label for="description">
+                Description
+            </label>
+
+            <textarea
+                    id="description"
+                    placeholder="Describe the waste (optional)"></textarea>
+
+
+            <button onclick="submitReport()">
+                Submit Report
+            </button>
+
+
+            <p id="result"></p>
+
+        </div>
+
+    </section>
+
+
+</main>
+
+<footer>
+
+
+    <div class="footer-logo">
+        ♻ EcoSphere
+    </div>
+
+    <p>
+        Smart Waste Management
+    </p>
+
+
+</footer>
+
+<script src="script.js"></script>
+
+</body>
+
+</html>
