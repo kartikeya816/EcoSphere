@@ -157,3 +157,11 @@ function updateProgressTracker(status) {
         lines[1].classList.add("active");
     }
 }
+
+function openImagePicker(event) {
+    const imageInput = document.getElementById("image");
+
+    if (event.target !== imageInput) {
+        imageInput.click();
+    }
+}

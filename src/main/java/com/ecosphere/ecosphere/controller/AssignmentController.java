@@ -77,8 +77,12 @@ public class AssignmentController {
     public List<Assignment> getWorkerAssignments(
             @PathVariable Integer workerId) {
 
-        return assignmentRepository.findByWorkerId(workerId);
+        return assignmentRepository.findByWorkerId(workerId)
+                .stream()
+                .filter(a -> !"COMPLETED".equals(a.getStatus()))
+                .toList();
     }
+
     @GetMapping("/{id}/report")
     public Report getAssignmentReport(@PathVariable Integer id) {
 

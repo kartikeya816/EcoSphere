@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>EcoSphere - History</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<header>
+    <div class="logo">
+        <span>♻</span> EcoSphere Admin
+    </div>
+
+    <nav>
+        <a href="admin.html">Dashboard</a>
+        <a href="history.html">History</a>
+        <a href="index.html">User Portal</a>
+        <a href="login.html" onclick="logout()">Logout</a>
+    </nav>
+</header>
+
+<section class="page-header">
+    <p>ADMINISTRATION</p>
+    <h1>Completed Work</h1>
+    <span>History of completed waste reports</span>
+</section>
+
+<section class="dashboard-section">
+
+    <div class="dashboard-section-header">
+        <div>
+            <p>COMPLETED REPORTS</p>
+            <h2>History</h2>
+        </div>
+    </div>
+
+    <div id="history" class="dashboard-grid">
+        Loading history...
+    </div>
+
+</section>
+
+<script>
+    if (localStorage.getItem("adminLoggedIn") !== "true") {
+        window.location.href = "login.html";
+    }
+
+    function logout() {
+        localStorage.removeItem("adminLoggedIn");
+    }
+</script>
+
+<script src="history.js"></script>
+
+</body>
+</html>

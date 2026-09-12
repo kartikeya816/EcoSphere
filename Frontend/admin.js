@@ -1,6 +1,7 @@
 async function loadReports() {
 
     const reportsDiv = document.getElementById("reports");
+    const historyDiv = document.getElementById("history");
     const reportSelect = document.getElementById("reportId");
 
     reportsDiv.innerText = "Loading reports...";
@@ -13,32 +14,89 @@ async function loadReports() {
 
         const reports = await response.json();
 
+        const activeReports = reports.filter(
+            report => report.status !== "COMPLETED"
+        );
+
+        const completedReports = reports.filter(
+            report => report.status === "COMPLETED"
+        );
+
+        // Active Reports
+
         reportsDiv.innerHTML = "";
+
         reportSelect.innerHTML =
             "<option value=''>Select Report</option>";
 
-        reports.forEach(report => {
-            reportSelect.innerHTML +=
-                "<option value='" + report.id + "'>" +
-                "Report #" + report.id +
-                " - " + report.wasteType +
-                "</option>";
+        if (activeReports.length === 0) {
 
-            reportsDiv.innerHTML +=
-                "<div class='card'>" +
-                "<h3>Report #" + report.id + "</h3>" +
-                "<p><b>Tracking Code:</b> " + report.hashCode + "</p>" +
-                "<p><b>Waste Type:</b> " + report.wasteType + "</p>" +
-                "<p><b>Location:</b> " + report.location + "</p>" +
-                "<p><b>Status:</b> <span class='status-badge " +
-                report.status.toLowerCase() +
-                "'>" +
-                report.status +
-                "</span></p>" +
-                "<p><b>Description:</b> " + report.description + "</p>" +
-                "</div>";
+            reportsDiv.innerText = "No active reports.";
 
-        });
+        } else {
+
+            activeReports.forEach(report => {
+
+                reportSelect.innerHTML +=
+                    "<option value='" + report.id + "'>" +
+                    "Report #" + report.id +
+                    " - " + report.wasteType +
+                    "</option>";
+
+                reportsDiv.innerHTML +=
+                    "<div class='card'>" +
+                    "<h3>Report #" + report.id + "</h3>" +
+                    "<p><b>Tracking Code:</b> " +
+                    report.hashCode + "</p>" +
+                    "<p><b>Waste Type:</b> " +
+                    report.wasteType + "</p>" +
+                    "<p><b>Location:</b> " +
+                    report.location + "</p>" +
+                    "<p><b>Status:</b> <span class='status-badge " +
+                    report.status.toLowerCase() +
+                    "'>" +
+                    report.status +
+                    "</span></p>" +
+                    "<p><b>Description:</b> " +
+                    report.description +
+                    "</p>" +
+                    "</div>";
+
+            });
+
+        }
+
+        // Completed History
+
+        historyDiv.innerHTML = "";
+
+        if (completedReports.length === 0) {
+
+            historyDiv.innerText = "No completed work yet.";
+
+        } else {
+
+            completedReports.forEach(report => {
+
+                historyDiv.innerHTML +=
+                    "<div class='card'>" +
+                    "<h3>✓ Report #" + report.id + "</h3>" +
+                    "<p><b>Tracking Code:</b> " +
+                    report.hashCode + "</p>" +
+                    "<p><b>Waste Type:</b> " +
+                    report.wasteType + "</p>" +
+                    "<p><b>Location:</b> " +
+                    report.location + "</p>" +
+                    "<p><b>Status:</b> COMPLETED</p>" +
+                    "<p><b>Description:</b> " +
+                    report.description +
+                    "</p>" +
+                    "<p><b>Completed Work:</b> Waste collection completed successfully.</p>" +
+                    "</div>";
+
+            });
+
+        }
 
     } catch (error) {
 
@@ -46,8 +104,10 @@ async function loadReports() {
             "Could not connect to EcoSphere server.";
 
         console.error(error);
+
     }
 }
+
 
 async function loadWorkers() {
 
@@ -65,20 +125,27 @@ async function loadWorkers() {
         const workers = await response.json();
 
         workersDiv.innerHTML = "";
+
         workerSelect.innerHTML =
             "<option value=''>Select Worker</option>";
 
         workers.forEach(worker => {
+
             workerSelect.innerHTML +=
                 "<option value='" + worker.id + "'>" +
-                worker.name + " (ID: " + worker.id + ")" +
+                worker.name +
+                " (ID: " + worker.id + ")" +
                 "</option>";
+
             workersDiv.innerHTML +=
                 "<div class='card'>" +
                 "<h3>" + worker.name + "</h3>" +
-                "<p><b>Email:</b> " + worker.email + "</p>" +
-                "<p><b>Phone:</b> " + worker.phone + "</p>" +
-                "<p><b>Status:</b> " + worker.status + "</p>" +
+                "<p><b>Email:</b> " +
+                worker.email + "</p>" +
+                "<p><b>Phone:</b> " +
+                worker.phone + "</p>" +
+                "<p><b>Status:</b> " +
+                worker.status + "</p>" +
                 "</div>";
 
         });
@@ -89,20 +156,28 @@ async function loadWorkers() {
             "Could not connect to EcoSphere server.";
 
         console.error(error);
+
     }
 }
 
+
 async function assignReport() {
 
-    const reportId = document.getElementById("reportId").value;
-    const workerId = document.getElementById("workerId").value;
-    const result = document.getElementById("assignResult");
+    const reportId =
+        document.getElementById("reportId").value;
+
+    const workerId =
+        document.getElementById("workerId").value;
+
+    const result =
+        document.getElementById("assignResult");
 
     if (!reportId || !workerId) {
-        result.innerText = "Enter report ID and worker ID.";
+
+        result.innerText =
+            "Enter report ID and worker ID.";
+
         return;
-        loadReports();
-        loadStats();
     }
 
     const body = {
@@ -125,7 +200,10 @@ async function assignReport() {
         );
 
         if (!response.ok) {
-            result.innerText = "Assignment failed.";
+
+            result.innerText =
+                "Assignment failed.";
+
             return;
         }
 
@@ -135,14 +213,22 @@ async function assignReport() {
             "Report assigned successfully. Assignment ID: "
             + assignment.id;
 
+        // Refresh dashboard
+
+        loadReports();
+        loadStats();
+
     } catch (error) {
 
         result.innerText =
             "Could not connect to EcoSphere server.";
 
         console.error(error);
+
     }
 }
+
+
 async function loadStats() {
 
     try {
@@ -162,7 +248,8 @@ async function loadStats() {
             report => report.status === "COMPLETED"
         ).length;
 
-        const pending = reports.length - completed;
+        const pending =
+            reports.length - completed;
 
         document.getElementById("totalReports").innerText =
             reports.length;
@@ -183,8 +270,11 @@ async function loadStats() {
     }
 }
 
+
 loadStats();
+
 setInterval(loadStats, 10000);
 
 loadReports();
+
 loadWorkers();

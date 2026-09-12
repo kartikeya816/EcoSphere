@@ -51,7 +51,7 @@
 
     <section class="report-page-card">
 
-        <div class="upload-box">
+        <div class="upload-box" onclick="openImagePicker(event)">
 
             <div class="upload-icon">
                 📷
@@ -64,10 +64,7 @@
                 you want to report.
             </p>
 
-            <input
-                    type="file"
-                    id="image"
-                    accept="image/*">
+            <input type="file" id="image" accept="image/*" onclick="event.stopPropagation()">
             <img id="imagePreview" class="image-preview" alt="Selected waste image">
 
         </div>
