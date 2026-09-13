@@ -8,4 +8,5 @@ import java.util.Optional;
 public interface ReportRepository extends JpaRepository<Report, Integer> {
 
     Optional<Report> findByHashCode(String hashCode);
+    Optional<Report> findByImageHash(String imageHash);
 }

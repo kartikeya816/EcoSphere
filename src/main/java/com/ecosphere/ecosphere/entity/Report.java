@@ -15,9 +15,16 @@ public class Report {
 
     private String hashCode;
 
+    private String imageHash;
+
     private String imagePath;
 
     private String location;
+
+    private Double latitude;
+    private Double longitude;
+    private Integer duplicateOfReportId;
+    private Integer duplicateConfidence;
 
     private String wasteType;
 
@@ -63,6 +70,14 @@ public class Report {
         this.hashCode = hashCode;
     }
 
+    public String getImageHash() {
+        return imageHash;
+    }
+
+    public void setImageHash(String imageHash) {
+        this.imageHash = imageHash;
+    }
+
     public String getImagePath() {
         return imagePath;
     }
@@ -77,6 +92,38 @@ public class Report {
 
     public void setLocation(String location) {
         this.location = location;
+    }
+
+    public Double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(Double latitude) {
+        this.latitude = latitude;
+    }
+
+    public Double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(Double longitude) {
+        this.longitude = longitude;
+    }
+
+    public Integer getDuplicateOfReportId() {
+        return duplicateOfReportId;
+    }
+
+    public void setDuplicateOfReportId(Integer duplicateOfReportId) {
+        this.duplicateOfReportId = duplicateOfReportId;
+    }
+
+    public Integer getDuplicateConfidence() {
+        return duplicateConfidence;
+    }
+
+    public void setDuplicateConfidence(Integer duplicateConfidence) {
+        this.duplicateConfidence = duplicateConfidence;
     }
 
     public String getWasteType() {

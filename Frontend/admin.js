@@ -1,8 +1,17 @@
 async function loadReports() {
 
     const reportsDiv = document.getElementById("reports");
-    const historyDiv = document.getElementById("history");
     const reportSelect = document.getElementById("reportId");
+
+    if (!reportsDiv) {
+        console.error("Element with id='reports' not found.");
+        return;
+    }
+
+    if (!reportSelect) {
+        console.error("Element with id='reportId' not found.");
+        return;
+    }
 
     reportsDiv.innerText = "Loading reports...";
 
@@ -12,20 +21,20 @@ async function loadReports() {
             "http://localhost:8080/api/reports"
         );
 
+        if (!response.ok) {
+            throw new Error("Failed to load reports");
+        }
+
         const reports = await response.json();
 
         const activeReports = reports.filter(
             report => report.status !== "COMPLETED"
         );
 
-        const completedReports = reports.filter(
-            report => report.status === "COMPLETED"
-        );
-
-        // Active Reports
-
+        // Clear old reports
         reportsDiv.innerHTML = "";
 
+        // Reset report dropdown
         reportSelect.innerHTML =
             "<option value=''>Select Report</option>";
 
@@ -37,65 +46,76 @@ async function loadReports() {
 
             activeReports.forEach(report => {
 
+                const status =
+                    report.status || "REPORTED";
+
+                // Add report to dropdown
                 reportSelect.innerHTML +=
-                    "<option value='" + report.id + "'>" +
-                    "Report #" + report.id +
-                    " - " + report.wasteType +
+                    "<option value='" +
+                    report.id +
+                    "'>" +
+                    "Report #" +
+                    report.id +
+                    " - " +
+                    (report.wasteType || "Unknown Waste") +
                     "</option>";
 
+                // Duplicate information
+                let duplicateInfo = "";
+
+                if (report.status === "POSSIBLE_DUPLICATE") {
+
+                    duplicateInfo =
+                        "<p><b>⚠ Duplicate Confidence:</b> " +
+                        report.duplicateConfidence +
+                        "%</p>" +
+
+                        "<p><b>Similar Report:</b> #" +
+                        report.duplicateOfReportId +
+                        "</p>";
+                }
+
+                // Report card
                 reportsDiv.innerHTML +=
+
                     "<div class='card'>" +
-                    "<h3>Report #" + report.id + "</h3>" +
+
+                    "<h3>Report #" +
+                    report.id +
+                    "</h3>" +
+
                     "<p><b>Tracking Code:</b> " +
-                    report.hashCode + "</p>" +
+                    (report.hashCode || "N/A") +
+                    "</p>" +
+
                     "<p><b>Waste Type:</b> " +
-                    report.wasteType + "</p>" +
+                    (report.wasteType || "Unknown") +
+                    "</p>" +
+
                     "<p><b>Location:</b> " +
-                    report.location + "</p>" +
-                    "<p><b>Status:</b> <span class='status-badge " +
-                    report.status.toLowerCase() +
+                    (report.location || "Unknown") +
+                    "</p>" +
+
+                    "<p><b>Status:</b> " +
+
+                    "<span class='status-badge " +
+                    status.toLowerCase() +
                     "'>" +
-                    report.status +
-                    "</span></p>" +
-                    "<p><b>Description:</b> " +
-                    report.description +
+
+                    status +
+
+                    "</span>" +
+
                     "</p>" +
-                    "</div>";
 
-            });
+                    duplicateInfo +
 
-        }
-
-        // Completed History
-
-        historyDiv.innerHTML = "";
-
-        if (completedReports.length === 0) {
-
-            historyDiv.innerText = "No completed work yet.";
-
-        } else {
-
-            completedReports.forEach(report => {
-
-                historyDiv.innerHTML +=
-                    "<div class='card'>" +
-                    "<h3>✓ Report #" + report.id + "</h3>" +
-                    "<p><b>Tracking Code:</b> " +
-                    report.hashCode + "</p>" +
-                    "<p><b>Waste Type:</b> " +
-                    report.wasteType + "</p>" +
-                    "<p><b>Location:</b> " +
-                    report.location + "</p>" +
-                    "<p><b>Status:</b> COMPLETED</p>" +
                     "<p><b>Description:</b> " +
-                    report.description +
+                    (report.description || "No description") +
                     "</p>" +
-                    "<p><b>Completed Work:</b> Waste collection completed successfully.</p>" +
+
                     "</div>";
-
             });
-
         }
 
     } catch (error) {
@@ -104,15 +124,27 @@ async function loadReports() {
             "Could not connect to EcoSphere server.";
 
         console.error(error);
-
     }
 }
 
 
 async function loadWorkers() {
 
-    const workersDiv = document.getElementById("workers");
-    const workerSelect = document.getElementById("workerId");
+    const workersDiv =
+        document.getElementById("workers");
+
+    const workerSelect =
+        document.getElementById("workerId");
+
+    if (!workersDiv) {
+        console.error("Element with id='workers' not found.");
+        return;
+    }
+
+    if (!workerSelect) {
+        console.error("Element with id='workerId' not found.");
+        return;
+    }
 
     workersDiv.innerText = "Loading workers...";
 
@@ -122,6 +154,10 @@ async function loadWorkers() {
             "http://localhost:8080/api/workers"
         );
 
+        if (!response.ok) {
+            throw new Error("Failed to load workers");
+        }
+
         const workers = await response.json();
 
         workersDiv.innerHTML = "";
@@ -129,25 +165,51 @@ async function loadWorkers() {
         workerSelect.innerHTML =
             "<option value=''>Select Worker</option>";
 
+        if (workers.length === 0) {
+
+            workersDiv.innerText =
+                "No workers available.";
+
+            return;
+        }
+
         workers.forEach(worker => {
 
             workerSelect.innerHTML +=
-                "<option value='" + worker.id + "'>" +
+
+                "<option value='" +
+                worker.id +
+                "'>" +
+
                 worker.name +
-                " (ID: " + worker.id + ")" +
+
+                " (ID: " +
+                worker.id +
+                ")" +
+
                 "</option>";
 
             workersDiv.innerHTML +=
-                "<div class='card'>" +
-                "<h3>" + worker.name + "</h3>" +
-                "<p><b>Email:</b> " +
-                worker.email + "</p>" +
-                "<p><b>Phone:</b> " +
-                worker.phone + "</p>" +
-                "<p><b>Status:</b> " +
-                worker.status + "</p>" +
-                "</div>";
 
+                "<div class='card'>" +
+
+                "<h3>" +
+                worker.name +
+                "</h3>" +
+
+                "<p><b>Email:</b> " +
+                worker.email +
+                "</p>" +
+
+                "<p><b>Phone:</b> " +
+                (worker.phone || "N/A") +
+                "</p>" +
+
+                "<p><b>Status:</b> " +
+                (worker.status || "UNKNOWN") +
+                "</p>" +
+
+                "</div>";
         });
 
     } catch (error) {
@@ -156,33 +218,52 @@ async function loadWorkers() {
             "Could not connect to EcoSphere server.";
 
         console.error(error);
-
     }
 }
 
 
 async function assignReport() {
 
-    const reportId =
-        document.getElementById("reportId").value;
+    const reportIdElement =
+        document.getElementById("reportId");
 
-    const workerId =
-        document.getElementById("workerId").value;
+    const workerIdElement =
+        document.getElementById("workerId");
 
     const result =
         document.getElementById("assignResult");
 
+    if (!reportIdElement ||
+        !workerIdElement ||
+        !result) {
+
+        console.error(
+            "Assignment form elements are missing."
+        );
+
+        return;
+    }
+
+    const reportId =
+        reportIdElement.value;
+
+    const workerId =
+        workerIdElement.value;
+
     if (!reportId || !workerId) {
 
         result.innerText =
-            "Enter report ID and worker ID.";
+            "Select a report and worker.";
 
         return;
     }
 
     const body = {
+
         reportId: parseInt(reportId),
+
         workerId: parseInt(workerId),
+
         status: "ASSIGNED"
     };
 
@@ -192,31 +273,37 @@ async function assignReport() {
             "http://localhost:8080/api/assignments",
             {
                 method: "POST",
+
                 headers: {
                     "Content-Type": "application/json"
                 },
+
                 body: JSON.stringify(body)
             }
         );
 
         if (!response.ok) {
 
+            const errorText =
+                await response.text();
+
             result.innerText =
-                "Assignment failed.";
+                "Assignment failed: " +
+                errorText;
 
             return;
         }
 
-        const assignment = await response.json();
+        const assignment =
+            await response.json();
 
         result.innerText =
-            "Report assigned successfully. Assignment ID: "
-            + assignment.id;
+            "Report assigned successfully. Assignment ID: " +
+            assignment.id;
 
         // Refresh dashboard
-
-        loadReports();
-        loadStats();
+        await loadReports();
+        await loadStats();
 
     } catch (error) {
 
@@ -224,7 +311,6 @@ async function assignReport() {
             "Could not connect to EcoSphere server.";
 
         console.error(error);
-
     }
 }
 
@@ -233,48 +319,105 @@ async function loadStats() {
 
     try {
 
-        const reportsResponse = await fetch(
-            "http://localhost:8080/api/reports"
-        );
+        const reportsResponse =
+            await fetch(
+                "http://localhost:8080/api/reports"
+            );
 
-        const workersResponse = await fetch(
-            "http://localhost:8080/api/workers"
-        );
+        const workersResponse =
+            await fetch(
+                "http://localhost:8080/api/workers"
+            );
 
-        const reports = await reportsResponse.json();
-        const workers = await workersResponse.json();
+        if (!reportsResponse.ok ||
+            !workersResponse.ok) {
 
-        const completed = reports.filter(
-            report => report.status === "COMPLETED"
-        ).length;
+            throw new Error(
+                "Failed to load dashboard statistics"
+            );
+        }
+
+        const reports =
+            await reportsResponse.json();
+
+        const workers =
+            await workersResponse.json();
+
+        const completed =
+            reports.filter(
+                report =>
+                    report.status === "COMPLETED"
+            ).length;
 
         const pending =
             reports.length - completed;
 
-        document.getElementById("totalReports").innerText =
-            reports.length;
+        const totalReports =
+            document.getElementById(
+                "totalReports"
+            );
 
-        document.getElementById("totalWorkers").innerText =
-            workers.length;
+        const totalWorkers =
+            document.getElementById(
+                "totalWorkers"
+            );
 
-        document.getElementById("pendingReports").innerText =
-            pending;
+        const pendingReports =
+            document.getElementById(
+                "pendingReports"
+            );
 
-        document.getElementById("completedReports").innerText =
-            completed;
+        const completedReports =
+            document.getElementById(
+                "completedReports"
+            );
+
+        if (totalReports) {
+
+            totalReports.innerText =
+                reports.length;
+        }
+
+        if (totalWorkers) {
+
+            totalWorkers.innerText =
+                workers.length;
+        }
+
+        if (pendingReports) {
+
+            pendingReports.innerText =
+                pending;
+        }
+
+        if (completedReports) {
+
+            completedReports.innerText =
+                completed;
+        }
 
     } catch (error) {
 
-        console.error(error);
-
+        console.error(
+            "Could not load statistics:",
+            error
+        );
     }
 }
 
 
-loadStats();
+// Initial dashboard loading
 
-setInterval(loadStats, 10000);
+loadStats();
 
 loadReports();
 
 loadWorkers();
+
+
+// Refresh statistics every 10 seconds
+
+setInterval(
+    loadStats,
+    10000
+);

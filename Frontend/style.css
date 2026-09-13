@@ -1139,3 +1139,8 @@ footer {
     background: #102d23;
     color: #9ff0b9;
 }
+.status-badge.possible_duplicate {
+    border: 1px solid #d6a84f;
+    padding: 4px 10px;
+    border-radius: 20px;
+}

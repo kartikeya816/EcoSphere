@@ -5,6 +5,8 @@ async function submitReport() {
     const image = document.getElementById("image").files[0];
     const location = document.getElementById("location").value;
     const description = document.getElementById("description").value;
+    const latitude = document.getElementById("latitude").value;
+    const longitude = document.getElementById("longitude").value;
     const result = document.getElementById("result");
 
     if (image && !image.type.startsWith("image/")) {
@@ -31,9 +33,11 @@ async function submitReport() {
 
     formData.append("location", location);
     formData.append("description", description);
-
+    formData.append("latitude", latitude);
+    formData.append("longitude", longitude);
     result.innerText = "Uploading and detecting waste...";
-
+    console.log("Latitude:", latitude);
+    console.log("Longitude:", longitude);
     try {
 
         const response = await fetch(
@@ -165,3 +169,37 @@ function openImagePicker(event) {
         imageInput.click();
     }
 }
+
+function getUserLocation() {
+
+    const status = document.getElementById("locationStatus");
+
+    if (!navigator.geolocation) {
+        status.innerText = "Location is not supported by this browser.";
+        return;
+    }
+
+    navigator.geolocation.getCurrentPosition(
+        function(position) {
+
+            const latitude = position.coords.latitude;
+            const longitude = position.coords.longitude;
+
+            document.getElementById("latitude").value = latitude;
+            document.getElementById("longitude").value = longitude;
+
+            status.innerText =
+                "✓ Location detected";
+        },
+
+        function(error) {
+
+            status.innerText =
+                "Could not detect location. Please allow location access.";
+
+            console.error(error);
+        }
+    );
+}
+
+getUserLocation();
